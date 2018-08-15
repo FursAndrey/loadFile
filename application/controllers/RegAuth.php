@@ -24,7 +24,7 @@ class RegAuth extends Secure_Control
         if ($a == 'auth') {                                             //авторизация
             $type = 'auth';
             if ($this->input->post('login') != NULL && $this->input->post('pass') != NULL) {
-                $ra = $this->RegAuth_model->ra($a);
+                $ra = $this->RegAuth_model->ra($a,$this->input->post('login'),$this->input->post('pass'));
                 if($ra == true){
                     header('Location: /regAuth/index', true, 303);
                 }
@@ -36,7 +36,7 @@ class RegAuth extends Secure_Control
         else if ($a == 'reg') {                                        //регистрация
             $type = 'reg';
             if ($this->input->post('login') != NULL && $this->input->post('pass') != NULL) {
-                $ra = $this->RegAuth_model->ra($a);
+                $ra = $this->RegAuth_model->ra($a,$this->input->post('login'),$this->input->post('pass'));
                 if($ra == true){
                     header('Location: /regAuth/index', true, 303);
                 }
@@ -60,7 +60,8 @@ class RegAuth extends Secure_Control
     }
     public function logOut()
     {
-        if($this->RegAuth_model->logOut()){
+        if($this->session->userdata('id') != NULL){
+            session_destroy();
             header( 'Location: /regAuth/index', true, 303 );
         }
     }

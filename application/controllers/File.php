@@ -8,6 +8,7 @@ class File extends Secure_Control
     {
         parent::__construct();
         $this->load->model('File_model');
+        $this->load->library('session');
     }
     public function index(){
         $this->load->view('/file/fileIns');
@@ -26,9 +27,9 @@ class File extends Secure_Control
                 if($_FILES["file"]["error"] == 0){											//если файл получен без ошибок
                     if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {		//записать по указанному адресу
                                                                                             //вставка файла
-                        $rez = $this -> File_model -> insertFile($uploadfile, $_FILES['file']['name'], $_FILES['file']['size']);
+                        $rez = $this -> File_model -> insertFile($uploadfile, $_FILES['file']['name'], $_FILES['file']['size'], $this->session->userdata('id'));
                         if($rez){                                                           //если успешно ...
-                            echo '<p>Файл успешно загружен</p><p><a href="/regAuth/page2">Ссылка на 2-ю страницу</a></p>';
+                            echo '<p>Файл успешно загружен</p><p><a href="/">Ссылка на главную страницу</a></p>';
                         }
                     }
                 }
@@ -48,7 +49,7 @@ class File extends Secure_Control
     public function fileList(){
         $logIn = $this->LI();
         if($logIn['auth']){
-            $rez = $this -> File_model -> showFile();
+            $rez = $this -> File_model -> showFile($this->session->userdata('id'));
             $this->load->view('/file/fileList', $rez);
         }
         else{
@@ -62,13 +63,13 @@ class File extends Secure_Control
         if(!empty($fileID)){
             $logIn = $this->LI();
             if($logIn['auth']){
-                $del = $this->File_model->delFile($fileID);
-                if($del == true){
+                $del = $this->File_model->delFile($fileID,$this->session->userdata('id'));
+//                if($del == true){
+//                    $this->fileList();
+//                }
+//                else{
                     $this->fileList();
-                }
-                else{
-                    $this->fileList();
-                }
+//                }
             }
             else{
                 $data = [
