@@ -22,7 +22,7 @@ error_reporting(E_ALL);
                     $mas[$key] = $dat;
                 }?>
                 <div dataid="<?=$mas['id']?>" dataUserID="<?=$mas['userID']?>">
-                    <p><a href="/<?=$mas['adres']?>" download><?=$mas['name']?></a></p>
+                    <p><a href="/File/load?filename=<?=$mas['adres']?>">Скачать <?=$mas['name']?></a></p>
                     <p>Размер файла: <?echo round($mas['size']/1000000,2)?> МБ</p>
                     <p >Владелец файла: <?=$mas['login']?></p>
                     <p><a href="/File/fileDel/<?=$mas['id']?>">Удалить файл</a></p>
