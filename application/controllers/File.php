@@ -24,7 +24,6 @@ class File extends Secure_Control
                     mkdir($structure, 0777, true);							//создание папки
                 }
                 $endNameFile = end($endNameFile);
-//                $uploadfile = $structure . $fileName . '.' . $endNameFile;		//получение полного адреса (с именем и расширением)
                 $uploadfile = $structure . $fileName;		//получение полного адреса (с именем и расширением)
                 if($_FILES["file"]["error"] == 0){											//если файл получен без ошибок
                     if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {		//записать по указанному адресу
@@ -81,8 +80,6 @@ class File extends Secure_Control
         $end = $this->input->get('end');
         $filename = 'load/' . $filename1[0] . '/' . $filename1;
         $filename2 = $filename . '.' . $end;
-//        $filename = 'load/' . $filename1[0] . '/' . $filename1 . '.' . $end;
-
         // нужен для Internet Explorer, иначе Content-Disposition игнорируется
         if(ini_get('zlib.output_compression'))
             ini_set('zlib.output_compression', 'Off');

@@ -54,9 +54,7 @@ class File_model extends CI_Model
 		}
 		else{
             $name = $mas[0]['adres'];
-//            $endaNme = $mas[0]['endName'];
             $adr = 'load/' . $name[0] . '/' . $name;
-//            $adr = 'load/' . $name[0] . '/' . $name . '.' . $endaNme;
             unlink($adr);
             return true;
         }
