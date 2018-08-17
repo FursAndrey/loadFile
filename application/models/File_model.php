@@ -9,10 +9,11 @@ class File_model extends CI_Model
         $this->load->database();
         $this->load->library('session');
     }
-    public function insertFile($adres,$name,$size,$usID){
+    public function insertFile($adres,$name,$size,$usID,$endName){
         $data = array(
             'adres' => $adres,
             'name' => $name,
+            'endName' => $endName,
             'size' => $size,
             'userID' => $usID
         );
@@ -52,7 +53,10 @@ class File_model extends CI_Model
             return false;
 		}
 		else{
-            $adr = $mas[0]['adres'];
+            $name = $mas[0]['adres'];
+//            $endaNme = $mas[0]['endName'];
+            $adr = 'load/' . $name[0] . '/' . $name;
+//            $adr = 'load/' . $name[0] . '/' . $name . '.' . $endaNme;
             unlink($adr);
             return true;
         }

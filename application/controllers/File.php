@@ -23,11 +23,13 @@ class File extends Secure_Control
                 if(!file_exists($structure)){												//проверить наличие папки, если нету - создать
                     mkdir($structure, 0777, true);							//создание папки
                 }
-                $uploadfile = $structure . $fileName . '.' . end($endNameFile);		//получение полного адреса (с именем и расширением)
+                $endNameFile = end($endNameFile);
+//                $uploadfile = $structure . $fileName . '.' . $endNameFile;		//получение полного адреса (с именем и расширением)
+                $uploadfile = $structure . $fileName;		//получение полного адреса (с именем и расширением)
                 if($_FILES["file"]["error"] == 0){											//если файл получен без ошибок
                     if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {		//записать по указанному адресу
                                                                                             //вставка файла
-                        $rez = $this -> File_model -> insertFile($uploadfile, $_FILES['file']['name'], $_FILES['file']['size'], $this->session->userdata('id'));
+                        $rez = $this -> File_model -> insertFile($fileName, $_FILES['file']['name'], $_FILES['file']['size'], $this->session->userdata('id'), $endNameFile);
                         if($rez){                                                           //если успешно ...
                             echo '<p>Файл успешно загружен</p><p><a href="/">Ссылка на главную страницу</a></p>';
                         }
@@ -63,13 +65,8 @@ class File extends Secure_Control
         if(!empty($fileID)){
             $logIn = $this->LI();
             if($logIn['auth']){
-                $del = $this->File_model->delFile($fileID,$this->session->userdata('id'));
-//                if($del == true){
-//                    $this->fileList();
-//                }
-//                else{
-                    $this->fileList();
-//                }
+                $this->File_model->delFile($fileID,$this->session->userdata('id'));
+                $this->fileList();
             }
             else{
                 $data = [
@@ -80,13 +77,16 @@ class File extends Secure_Control
         }
     }
     public function load(){
-        $filename = $this->input->get('filename');
+        $filename1 = $this->input->get('filename');
+        $end = $this->input->get('end');
+        $filename = 'load/' . $filename1[0] . '/' . $filename1;
+        $filename2 = $filename . '.' . $end;
+//        $filename = 'load/' . $filename1[0] . '/' . $filename1 . '.' . $end;
+
         // нужен для Internet Explorer, иначе Content-Disposition игнорируется
         if(ini_get('zlib.output_compression'))
             ini_set('zlib.output_compression', 'Off');
-
         $file_extension = strtolower(substr(strrchr($filename,"."),1));
-
         if( $filename == "" )
         {
             echo "ОШИБКА: не указано имя файла.";
@@ -117,9 +117,9 @@ class File extends Secure_Control
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header("Cache-Control: private",false); // нужен для некоторых браузеров
         header("Content-Type: $ctype");
-        header("Content-Disposition: attachment; filename=\"".basename($filename)."\";" );
+        header("Content-Disposition: attachment; filename=\"".basename($filename2)."\";" );
         header("Content-Transfer-Encoding: binary");
-        header("Content-Length: ".filesize($filename)); // необходимо доделать подсчет размера файла по абсолютному пути
-        readfile("$filename");
+        header("Content-Length: ".filesize($filename2)); // необходимо доделать подсчет размера файла по абсолютному пути
+        readfile("$filename2");
     }
 }

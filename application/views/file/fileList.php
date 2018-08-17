@@ -21,8 +21,8 @@ error_reporting(E_ALL);
                 foreach ($row as $key => $dat){
                     $mas[$key] = $dat;
                 }?>
-                <div dataid="<?=$mas['id']?>" dataUserID="<?=$mas['userID']?>">
-                    <p><a href="/File/load?filename=<?=$mas['adres']?>">Скачать <?=$mas['name']?></a></p>
+                <div>
+                    <p><a href="/File/load?filename=<?=$mas['adres']?>&end=<?=$mas['endName']?>">Скачать <?=$mas['name']?></a></p>
                     <p>Размер файла: <?echo round($mas['size']/1000000,2)?> МБ</p>
                     <p >Владелец файла: <?=$mas['login']?></p>
                     <p><a href="/File/fileDel/<?=$mas['id']?>">Удалить файл</a></p>
