@@ -17,14 +17,14 @@ class File extends Secure_Control
         $logIn = $this->LI();
         if($logIn['auth']){
             if($_FILES != []){
-                $fileName = md5($_FILES['file']['name'] . time());						//назначение уникального имени
-                $endNameFile = explode('.', $_FILES['file']['name']);				//получение расширения
-                $structure = 'load/' . $fileName[0] . '/';									//подготовка директории для записи файла
-                if(!file_exists($structure)){												//проверить наличие папки, если нету - создать
+                $fileName = md5($_FILES['file']['name'] . time());			//назначение уникального имени
+                $endNameFile = explode('.', $_FILES['file']['name']);		//получение расширения
+                $structure = 'load/' . $fileName[0] . '/';					//подготовка директории для записи файла
+                if(!file_exists($structure)){								//проверить наличие папки, если нету - создать
                     mkdir($structure, 0777, true);							//создание папки
                 }
                 $endNameFile = end($endNameFile);
-                $uploadfile = $structure . $fileName;		//получение полного адреса (с именем и расширением)
+                $uploadfile = $structure . $fileName;						//получение полного адреса (с именем и расширением)
                 if($_FILES["file"]["error"] == 0){											//если файл получен без ошибок
                     if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {		//записать по указанному адресу
                                                                                             //вставка файла
